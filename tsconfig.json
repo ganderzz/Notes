@@ -12,9 +12,10 @@
       "react-dom",
       "jest"
     ],
+    
     "allowSyntheticDefaultImports": true,
-
     "experimentalDecorators": true,
+    "noImplicitAny": false,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "pretty": true
