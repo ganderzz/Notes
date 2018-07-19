@@ -1,67 +1,16 @@
 import * as React from "react";
 import { Slate } from "slate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NodeType } from "../../Utilities/Editor/nodeType";
+import { MarkType } from "../../Utilities/Editor/markType";
+import { MarkButton } from "./MarkButton";
+import { NodeButton } from "./NodeButton";
+import { hasBlock } from "../../Utilities/Editor/utils";
 
 interface IProps {
   onChange: (change) => void;
   value: Slate.Value;
   style?: {};
-}
-
-export function hasMark(value: Slate.Value, type: string) {
-  return value.activeMarks.some(
-    (mark?: Slate.Mark) => (mark && mark.type == type) || false
-  );
-}
-
-export function hasBlock(value: Slate.Value, type: string) {
-  return value.blocks.some(
-    (mark?: Slate.Block) => (mark && mark.type == type) || false
-  );
-}
-
-function MarkButton({ children, value, type, onClick, ...rest }: any) {
-  const isActive = hasMark(value, type);
-
-  return (
-    <button
-      style={{
-        padding: "10px 15px",
-        textAlign: "center",
-        background: "#FFF",
-        border: 0,
-        fontSize: "0.9rem",
-        cursor: "pointer",
-        ...(isActive ? { opacity: 1, fontWeight: 600 } : { opacity: 0.55 }),
-      }}
-      onClick={e => onClick(e, type)}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-}
-
-function NodeButton({ children, value, type, onClick, ...rest }: any) {
-  const isActive = hasBlock(value, type);
-
-  return (
-    <button
-      style={{
-        padding: "10px 15px",
-        textAlign: "center",
-        background: "#FFF",
-        border: 0,
-        fontSize: "0.9rem",
-        cursor: "pointer",
-        ...(isActive ? { opacity: 1, fontWeight: 600 } : { opacity: 0.55 }),
-      }}
-      onClick={e => onClick(e, type)}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
 }
 
 export class Toolbar extends React.Component<IProps> {
@@ -101,7 +50,7 @@ export class Toolbar extends React.Component<IProps> {
     return (
       <div style={{ fontSize: "1rem", ...style }} {...rest}>
         <MarkButton
-          type="bold"
+          type={MarkType.Bold}
           value={value}
           onClick={this.handleMarkClick}
           title="Bold (ctrl+b)"
@@ -110,7 +59,7 @@ export class Toolbar extends React.Component<IProps> {
         </MarkButton>
 
         <MarkButton
-          type="italic"
+          type={MarkType.Italic}
           value={value}
           onClick={this.handleMarkClick}
           title="Italic (ctrl+i)"
@@ -118,17 +67,8 @@ export class Toolbar extends React.Component<IProps> {
           <FontAwesomeIcon icon="italic" />
         </MarkButton>
 
-        <MarkButton
-          type="underline"
-          value={value}
-          onClick={this.handleMarkClick}
-          title="Underline (ctrl+u)"
-        >
-          <FontAwesomeIcon icon="underline" />
-        </MarkButton>
-
         <NodeButton
-          type="h1"
+          type={NodeType.Header}
           value={value}
           onClick={this.handleNodeClick}
           title="Header (ctrl+h)"
